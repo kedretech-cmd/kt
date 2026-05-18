@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEDRE TECH — Insights at the Edge of Technology</title>
+  <meta name="description" content="KEDRE TECH is a premium tech blog covering AI, development, design, and the future of technology. Deep insights for modern builders.">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://kedretech.com/">
+  <meta property="og:title"       content="KEDRE TECH — Insights at the Edge of Technology">
+  <meta property="og:description" content="Premium tech blog covering AI, development, design, and the future of technology.">
+  <meta property="og:image"       content="https://kedretech.com/images/og-cover.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:site"       content="@kedretech">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://kedretech.com/">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "KEDRE TECH",
+    "description": "Premium tech blog covering AI, development, design, and the future of technology.",
+    "url": "https://kedretech.com",
+    "publisher": {
+      "@type": "Organization",
+      "name": "KEDRE TECH",
+      "logo": { "@type": "ImageObject", "url": "https://kedretech.com/images/logo.png" }
+    }
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/home.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+</head>
+
+<body>
+  <!-- Scroll Progress -->
+  <div id="scroll-progress" role="progressbar" aria-label="Reading progress"></div>
+
+  <!-- ── NAVBAR ────────────────────────────────────────────── -->
+  <header>
+    <nav id="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo" aria-label="KEDRE TECH Home">
+          <div class="logo-mark" aria-hidden="true">KT</div>
+          KEDRE TECH
+        </a>
+
+        <div class="nav-links" role="menubar">
+          <a href="index.html"  class="nav-link active" role="menuitem">Home</a>
+          <a href="blog.html"   class="nav-link" role="menuitem">Blog</a>
+          <a href="contact.html"class="nav-link" role="menuitem">Contact</a>
+          <a href="admin.html"  class="nav-link" data-auth="admin" style="display:none" role="menuitem">Admin</a>
+        </div>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">☀️</button>
+
+          <!-- Guest -->
+          <div data-auth="guest" style="display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-ghost btn-sm" onclick="openModal('auth-modal')">Sign In</button>
+            <button class="btn-nav-cta" onclick="openModal('auth-modal')">Get Started</button>
+          </div>
+
+          <!-- User -->
+          <div data-auth="user" style="display:none;align-items:center;gap:8px;">
+            <span style="font-size:0.85rem;color:var(--text-muted);">Hi, <span id="user-name"></span></span>
+            <button class="btn btn-ghost btn-sm" data-action="sign-out">Sign Out</button>
+          </div>
+
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+      <a href="index.html"   class="nav-link active">Home</a>
+      <a href="blog.html"    class="nav-link">Blog</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="admin.html"   class="nav-link" data-auth="admin" style="display:none">Admin</a>
+      <div style="height:1px;background:var(--border);margin:8px 0;"></div>
+      <button class="btn btn-primary" onclick="openModal('auth-modal');document.getElementById('mobile-nav').classList.remove('open')">Sign In / Join</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ── HERO ─────────────────────────────────────────────── -->
+    <section id="hero" aria-label="Hero section">
+      <!-- Particle Canvas -->
+      <canvas id="hero-particles" aria-hidden="true"></canvas>
+
+      <!-- Gradient Orbs -->
+      <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+      <div class="hero-grid-overlay" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-badge reveal">
+            <span class="badge-dot" aria-hidden="true"></span>
+            <span>Now publishing premium tech content</span>
+          </div>
+
+          <h1 class="hero-title reveal reveal-delay-1">
+            Insights at the<br>
+            <span class="hero-title-accent">Edge of Tech</span>
+          </h1>
+
+          <p class="hero-subtitle reveal reveal-delay-2">
+            Deep-dive articles on AI, software architecture, design systems, and the tools shaping tomorrow. Written for modern builders.
+          </p>
+
+          <div class="hero-cta reveal reveal-delay-3">
+            <a href="blog.html" class="btn btn-primary btn-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              Read the Blog
+            </a>
+            <a href="#featured" class="btn btn-ghost btn-lg">
+              Explore Posts
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
+          </div>
+
+          <div class="hero-stats reveal reveal-delay-4" aria-label="Site statistics">
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="stat-posts">—</span>
+              <span class="hero-stat-label">Articles</span>
+            </div>
+            <div class="hero-stat-divider" aria-hidden="true"></div>
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="stat-views">—</span>
+              <span class="hero-stat-label">Total Reads</span>
+            </div>
+            <div class="hero-stat-divider" aria-hidden="true"></div>
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="stat-cats">6</span>
+              <span class="hero-stat-label">Categories</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Post Card (Floating) -->
+        <div class="hero-card-wrap reveal reveal-delay-2" aria-label="Featured article preview">
+          <div class="hero-card" id="hero-featured-card">
+            <div class="hero-card-skeleton">
+              <div class="skeleton" style="height:100%;border-radius:16px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CATEGORIES ────────────────────────────────────────── -->
+    <section class="section" id="categories" aria-label="Browse by category">
+      <div class="section-inner">
+        <div class="section-header reveal">
+          <span class="section-label">Explore</span>
+          <h2 class="section-title">Browse by Category</h2>
+          <p class="section-subtitle">Dive into topics that matter most to developers, designers, and tech enthusiasts.</p>
+        </div>
+
+        <div class="categories-grid reveal reveal-delay-1" id="categories-grid" role="list">
+          <!-- Rendered by JS -->
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+          <div class="cat-skeleton skeleton" style="height:96px;border-radius:16px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURED POSTS ────────────────────────────────────── -->
+    <section class="section section-dark" id="featured" aria-label="Featured posts">
+      <div class="section-inner">
+        <div class="section-header-row reveal">
+          <div>
+            <span class="section-label">Featured</span>
+            <h2 class="section-title">Editor's Picks</h2>
+          </div>
+          <a href="blog.html" class="btn btn-ghost">View all posts →</a>
+        </div>
+
+        <div class="blog-grid" id="featured-grid">
+          <!-- Skeleton -->
+          ${[1,2,3].map(() => `
+          <div class="skeleton-card">
+            <div class="skeleton skeleton-img"></div>
+            <div class="skeleton-body">
+              <div class="skeleton" style="height:12px;width:45%;margin-bottom:16px;"></div>
+              <div class="skeleton" style="height:20px;width:90%;margin-bottom:10px;"></div>
+              <div class="skeleton" style="width:100%;height:14px;margin-bottom:8px;"></div>
+              <div class="skeleton" style="width:70%;height:14px;"></div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LATEST POSTS ──────────────────────────────────────── -->
+    <section class="section" id="latest" aria-label="Latest posts">
+      <div class="section-inner">
+        <div class="section-header-row reveal">
+          <div>
+            <span class="section-label">Latest</span>
+            <h2 class="section-title">Fresh off the Press</h2>
+          </div>
+          <div class="posts-filter" role="tablist" aria-label="Filter posts">
+            <button class="filter-btn active" data-cat="" role="tab" aria-selected="true">All</button>
+            <button class="filter-btn" data-cat="technology" role="tab" aria-selected="false">Tech</button>
+            <button class="filter-btn" data-cat="ai-ml" role="tab" aria-selected="false">AI</button>
+            <button class="filter-btn" data-cat="development" role="tab" aria-selected="false">Dev</button>
+          </div>
+        </div>
+
+        <div class="blog-grid" id="posts-grid"></div>
+        <div id="posts-empty" class="empty-state" style="display:none;">
+          <div class="empty-icon">📭</div>
+          <h3>No posts yet</h3>
+          <p>Check back soon for fresh content.</p>
+        </div>
+        <div id="posts-loader" class="posts-loader" style="display:none;"></div>
+        <div style="text-align:center;margin-top:var(--space-2xl);">
+          <button class="btn btn-ghost" id="load-more-btn" style="display:none;" aria-label="Load more posts">
+            Load More
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NEWSLETTER ────────────────────────────────────────── -->
+    <section class="section newsletter-section reveal" aria-label="Newsletter signup">
+      <div class="section-inner">
+        <div class="newsletter-inner">
+          <div class="newsletter-glow" aria-hidden="true"></div>
+          <div class="newsletter-content">
+            <span class="section-label">Newsletter</span>
+            <h2 class="section-title" style="font-size:clamp(1.75rem,3vw,2.5rem);">Stay in the Loop</h2>
+            <p class="section-subtitle">Weekly digest of the best articles, curated just for builders. No spam, unsubscribe any time.</p>
+            <form class="nl-form" id="newsletter-form" novalidate>
+              <div class="nl-input-group">
+                <input type="email" class="nl-input" id="nl-email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">
+                <button type="submit" class="btn btn-primary" id="nl-submit">
+                  <span>Subscribe</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
+              </div>
+              <p class="nl-note">Join 1,000+ subscribers · No spam ever</p>
+            </form>
+          </div>
+          <div class="newsletter-art" aria-hidden="true">
+            <div class="nl-art-ring nl-art-ring-1"></div>
+            <div class="nl-art-ring nl-art-ring-2"></div>
+            <div class="nl-art-ring nl-art-ring-3"></div>
+            <div class="nl-art-icon">✉️</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT PREVIEW ───────────────────────────────────── -->
+    <section class="section" id="contact-preview" aria-label="Contact section">
+      <div class="section-inner">
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <span class="section-label">Contact</span>
+            <h2 class="section-title">Let's Build Together</h2>
+            <p class="section-subtitle">Have a story idea, partnership proposal, or just want to say hello? We'd love to hear from you.</p>
+            <div class="contact-features">
+              <div class="contact-feature">
+                <div class="feature-icon">💬</div>
+                <div>
+                  <h4>Quick Response</h4>
+                  <p>We reply within 24 hours</p>
+                </div>
+              </div>
+              <div class="contact-feature">
+                <div class="feature-icon">🤝</div>
+                <div>
+                  <h4>Collaborations</h4>
+                  <p>Open to partnerships & guest posts</p>
+                </div>
+              </div>
+              <div class="contact-feature">
+                <div class="feature-icon">📢</div>
+                <div>
+                  <h4>Sponsorships</h4>
+                  <p>Reach thousands of tech readers</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap reveal reveal-delay-2">
+            <form class="contact-form" id="contact-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="c-name">Full Name</label>
+                  <input type="text" id="c-name" class="form-input" placeholder="John Doe" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="c-email">Email Address</label>
+                  <input type="email" id="c-email" class="form-input" placeholder="john@company.com" required autocomplete="email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="c-subject">Subject</label>
+                <input type="text" id="c-subject" class="form-input" placeholder="What's on your mind?">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="c-message">Message</label>
+                <textarea id="c-message" class="form-textarea" placeholder="Tell us about your project, idea, or question..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" id="contact-submit" style="width:100%">
+                <span id="contact-btn-text">Send Message</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── FOOTER ────────────────────────────────────────────── -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:var(--space-md);">
+            <div class="logo-mark" aria-hidden="true">KT</div>
+            KEDRE TECH
+          </div>
+          <p>Deep-dive tech writing for developers, designers, and curious minds building the future.</p>
+          <div class="footer-social" aria-label="Social media links">
+            <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+            <a href="#" class="social-btn" aria-label="GitHub">⌥</a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+            <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Content</h4>
+          <ul class="footer-links">
+            <li><a href="blog.html" class="footer-link">All Articles</a></li>
+            <li><a href="blog.html?cat=technology" class="footer-link">Technology</a></li>
+            <li><a href="blog.html?cat=ai-ml" class="footer-link">AI & ML</a></li>
+            <li><a href="blog.html?cat=development" class="footer-link">Development</a></li>
+            <li><a href="blog.html?cat=design" class="footer-link">Design</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">About</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+            <li><a href="#" class="footer-link">Newsletter</a></li>
+            <li><a href="admin.html" class="footer-link" data-auth="admin" style="display:none">Admin Panel</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Use</a></li>
+            <li><a href="#" class="footer-link">Cookie Policy</a></li>
+            <li><a href="#" class="footer-link">RSS Feed</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 KEDRE TECH. All rights reserved.</p>
+        <p>Built with ❤️ for the tech community</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── AUTH MODAL ────────────────────────────────────────── -->
+  <div class="modal-overlay" id="auth-modal" role="dialog" aria-modal="true" aria-label="Sign in or create account" onclick="if(event.target===this)closeModal('auth-modal')">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" onclick="closeModal('auth-modal')" aria-label="Close">✕</button>
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab active" data-tab="signin" role="tab" aria-selected="true">Sign In</button>
+        <button class="auth-tab" data-tab="signup" role="tab" aria-selected="false">Create Account</button>
+      </div>
+
+      <!-- Sign In -->
+      <div id="signin-panel" class="auth-panel" role="tabpanel">
+        <h2 class="auth-title">Welcome back</h2>
+        <p class="auth-subtitle">Sign in to like, comment, and bookmark posts</p>
+        <form id="signin-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="si-email">Email</label>
+            <input type="email" id="si-email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="si-password">Password</label>
+            <input type="password" id="si-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div id="signin-error" class="auth-error" role="alert"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signin-submit">Sign In</button>
+        </form>
+      </div>
+
+      <!-- Sign Up -->
+      <div id="signup-panel" class="auth-panel" style="display:none;" role="tabpanel">
+        <h2 class="auth-title">Join KEDRE TECH</h2>
+        <p class="auth-subtitle">Create an account to engage with our community</p>
+        <form id="signup-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="su-name">Full Name</label>
+            <input type="text" id="su-name" class="form-input" placeholder="Your Name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="su-email">Email</label>
+            <input type="email" id="su-email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="su-password">Password</label>
+            <input type="password" id="su-password" class="form-input" placeholder="Min 8 characters" required minlength="8" autocomplete="new-password">
+          </div>
+          <div id="signup-error" class="auth-error" role="alert"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signup-submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Back to Top -->
+  <button id="back-to-top" aria-label="Scroll to top">↑</button>
+
+  <!-- Scripts -->
+  <script src="js/app.js" defer></script>
+  <script src="js/home.js" defer></script>
+</body>
+</html>

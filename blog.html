@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — KEDRE TECH</title>
+  <meta name="description" content="Explore all articles on AI, development, design, and technology at KEDRE TECH.">
+  <link rel="canonical" href="https://kedretech.com/blog.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Page-specific */
+    .page-header {
+      padding: 140px var(--space-xl) var(--space-3xl);
+      background: var(--ink-2);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      margin-bottom: var(--space-md);
+    }
+    .page-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: var(--space-2xl);
+    }
+
+    /* Search Bar */
+    .search-wrap {
+      display: flex;
+      gap: var(--space-md);
+      max-width: 680px;
+      flex-wrap: wrap;
+    }
+    .search-bar {
+      flex: 1;
+      position: relative;
+      min-width: 260px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 18px 14px 48px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all var(--t-fast);
+    }
+    .search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+      font-size: 1rem;
+    }
+
+    /* Blog layout */
+    .blog-layout {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-xl);
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+
+    /* Category sidebar */
+    .sidebar {
+      position: sticky;
+      top: 100px;
+    }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    .sidebar-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: var(--space-md);
+    }
+    .sidebar-cats { display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-cat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--t-fast);
+      text-decoration: none;
+    }
+    .sidebar-cat:hover { background: var(--white-15); color: var(--white); }
+    .sidebar-cat.active { background: rgba(37,99,235,0.12); color: var(--blue-3); }
+    .sidebar-cat span {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      background: var(--white-15);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag-item {
+      padding: 4px 12px;
+      background: var(--white-15);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--t-fast);
+      font-family: var(--font-mono);
+    }
+    .tag-item:hover { border-color: var(--blue); color: var(--blue-3); }
+
+    @media (max-width: 900px) {
+      .blog-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+    @media (max-width: 600px) {
+      .search-wrap { flex-direction: column; }
+      .page-header { padding: 120px var(--space-lg) var(--space-2xl); }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+</head>
+<body>
+  <div id="scroll-progress"></div>
+
+  <header>
+    <nav id="navbar">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-mark">KT</div>
+          KEDRE TECH
+        </a>
+        <div class="nav-links">
+          <a href="index.html"   class="nav-link">Home</a>
+          <a href="blog.html"    class="nav-link active">Blog</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="admin.html"   class="nav-link" data-auth="admin" style="display:none">Admin</a>
+        </div>
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-btn">☀️</button>
+          <div data-auth="guest" style="display:flex;gap:8px;align-items:center;">
+            <button class="btn-nav-cta" onclick="openModal('auth-modal')">Sign In</button>
+          </div>
+          <div data-auth="user" style="display:none;align-items:center;gap:8px;">
+            <span style="font-size:0.85rem;color:var(--text-muted);">Hi, <span id="user-name"></span></span>
+            <button class="btn btn-ghost btn-sm" data-action="sign-out">Sign Out</button>
+          </div>
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <nav id="mobile-nav" class="mobile-nav">
+      <a href="index.html"   class="nav-link">Home</a>
+      <a href="blog.html"    class="nav-link active">Blog</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="section-label">All Articles</span>
+      <h1 class="page-title">The Blog</h1>
+      <p class="page-subtitle">Deep-dive articles on AI, development, design, and the tools shaping tomorrow.</p>
+      <div class="search-wrap">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="search" class="search-input" id="search-input" placeholder="Search articles…" autocomplete="off" aria-label="Search articles">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="blog-layout">
+      <!-- Posts -->
+      <div>
+        <div id="search-results-label" style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-lg);display:none;"></div>
+        <div class="blog-grid" id="posts-grid"></div>
+        <div id="posts-empty" class="empty-state" style="display:none;">
+          <div class="empty-icon">🔎</div>
+          <h3>No results found</h3>
+          <p>Try a different search term or browse by category.</p>
+        </div>
+        <div id="posts-loader" class="posts-loader" style="display:none;"></div>
+        <div style="text-align:center;margin-top:var(--space-2xl);">
+          <button class="btn btn-ghost" id="load-more-btn" style="display:none;">Load More Articles</button>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">Categories</div>
+          <div class="sidebar-cats" id="sidebar-cats">
+            <a class="sidebar-cat active" data-cat="" href="#">All <span id="all-count">0</span></a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-title">Popular Tags</div>
+          <div class="tags-cloud" id="tags-cloud">
+            <span class="tag">AI</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Design</span>
+            <span class="tag">CSS</span>
+            <span class="tag">Supabase</span>
+          </div>
+        </div>
+        <div class="sidebar-card" style="text-align:center;">
+          <div style="font-size:2rem;margin-bottom:var(--space-sm);">✉️</div>
+          <h4 style="font-family:var(--font-display);font-weight:700;color:var(--white);margin-bottom:4px;">Newsletter</h4>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:var(--space-md);">Weekly digest of the best posts.</p>
+          <a href="index.html#newsletter" class="btn btn-primary btn-sm" style="width:100%">Subscribe Free</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Auth Modal (same structure) -->
+  <div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeModal('auth-modal')">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="signin">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <div id="signin-panel" class="auth-panel">
+        <h2 class="auth-title">Welcome back</h2>
+        <p class="auth-subtitle">Sign in to like, comment, and bookmark posts</p>
+        <form id="signin-form">
+          <div class="form-group">
+            <label class="form-label" for="si-email">Email</label>
+            <input type="email" id="si-email" class="form-input" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="si-password">Password</label>
+            <input type="password" id="si-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <div id="signin-error" class="auth-error"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signin-submit">Sign In</button>
+        </form>
+      </div>
+      <div id="signup-panel" class="auth-panel" style="display:none;">
+        <h2 class="auth-title">Join KEDRE TECH</h2>
+        <p class="auth-subtitle">Create an account to engage with the community</p>
+        <form id="signup-form">
+          <div class="form-group">
+            <label class="form-label" for="su-name">Full Name</label>
+            <input type="text" id="su-name" class="form-input" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="su-email">Email</label>
+            <input type="email" id="su-email" class="form-input" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="su-password">Password</label>
+            <input type="password" id="su-password" class="form-input" placeholder="Min 8 characters" required minlength="8">
+          </div>
+          <div id="signup-error" class="auth-error"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signup-submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <button id="back-to-top" aria-label="Scroll to top">↑</button>
+
+  <script src="js/app.js" defer></script>
+  <script>
+    // ── Blog Page Logic ────────────────────────────────────────
+    window.openModal  = id => document.getElementById(id)?.classList.add('open');
+    window.closeModal = id => document.getElementById(id)?.classList.remove('open');
+
+    let page = 0, filter = '', searchQ = '', loading = false, more = true;
+
+    async function loadPage(reset = false) {
+      if (loading) return;
+      const grid  = document.getElementById('posts-grid');
+      const empty = document.getElementById('posts-empty');
+      const btn   = document.getElementById('load-more-btn');
+      const ldr   = document.getElementById('posts-loader');
+      if (!grid) return;
+
+      if (reset) {
+        page = 0; more = true;
+        grid.innerHTML = renderSkeletonCards(6);
+        if (empty) empty.style.display = 'none';
+      }
+
+      loading = true;
+      if (ldr) ldr.style.display = 'flex';
+
+      try {
+        const { posts, hasMore: hm } = await BlogAPI.getPosts({ page, category: filter || null, search: searchQ });
+        more = hm;
+        if (reset) grid.innerHTML = '';
+        if (!posts.length && reset) {
+          if (empty) empty.style.display = 'block';
+        } else {
+          posts.forEach(p => {
+            const el = document.createElement('div');
+            el.innerHTML = renderBlogCard(p);
+            grid.appendChild(el.firstElementChild);
+          });
+        }
+        if (btn) btn.style.display = more ? 'inline-flex' : 'none';
+        page++;
+        initReveal();
+      } catch { Toast.show('Failed to load posts', 'error'); } finally {
+        loading = false;
+        if (ldr) ldr.style.display = 'none';
+      }
+    }
+
+    async function loadSidebar() {
+      const cats = await BlogAPI.getCategories();
+      const el   = document.getElementById('sidebar-cats');
+      if (!el || !cats.length) return;
+
+      const total = cats.reduce((s, c) => s + (c.post_count || 0), 0);
+      document.getElementById('all-count').textContent = total;
+
+      cats.forEach(cat => {
+        const a = document.createElement('a');
+        a.className = 'sidebar-cat';
+        a.dataset.cat = cat.slug;
+        a.href = '#';
+        a.innerHTML = `<span style="display:flex;align-items:center;gap:8px;">${cat.icon} ${DOM.sanitize(cat.name)}</span><span>${cat.post_count || 0}</span>`;
+        el.appendChild(a);
+      });
+
+      el.addEventListener('click', (e) => {
+        const cat = e.target.closest('.sidebar-cat');
+        if (!cat) return;
+        e.preventDefault();
+        el.querySelectorAll('.sidebar-cat').forEach(c => c.classList.remove('active'));
+        cat.classList.add('active');
+        filter = cat.dataset.cat;
+        loadPage(true);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // URL params
+      const params = new URLSearchParams(location.search);
+      if (params.get('cat')) filter = params.get('cat');
+
+      loadPage(true);
+      loadSidebar();
+
+      // Search
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        const search = debounce((val) => {
+          searchQ = val;
+          const label = document.getElementById('search-results-label');
+          if (label) label.style.display = val ? 'block' : 'none';
+          if (label && val) label.textContent = `Showing results for "${val}"`;
+          loadPage(true);
+        }, 400);
+        searchInput.addEventListener('input', e => search(e.target.value.trim()));
+      }
+
+      // Load more
+      document.getElementById('load-more-btn')?.addEventListener('click', () => {
+        if (more && !loading) loadPage();
+      });
+
+      // Auth modal tabs
+      document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelectorAll('.auth-panel').forEach(p => p.style.display = 'none');
+          document.getElementById(`${tab.dataset.tab}-panel`).style.display = 'block';
+        });
+      });
+
+      document.getElementById('signin-form')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('signin-submit');
+        btn.disabled = true; btn.textContent = 'Signing in…';
+        try {
+          await Auth.signIn(document.getElementById('si-email').value, document.getElementById('si-password').value);
+          Toast.show('Welcome back!', 'success');
+          closeModal('auth-modal');
+        } catch(err) {
+          const el = document.getElementById('signin-error');
+          if (el) { el.textContent = err.message; el.classList.add('visible'); }
+        } finally { btn.disabled = false; btn.textContent = 'Sign In'; }
+      });
+
+      document.getElementById('signup-form')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('signup-submit');
+        btn.disabled = true; btn.textContent = 'Creating…';
+        try {
+          await Auth.signUp(
+            document.getElementById('su-email').value,
+            document.getElementById('su-password').value,
+            document.getElementById('su-name').value
+          );
+          Toast.show('Account created! Check your email.', 'success');
+          closeModal('auth-modal');
+        } catch(err) {
+          const el = document.getElementById('signup-error');
+          if (el) { el.textContent = err.message; el.classList.add('visible'); }
+        } finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — KEDRE TECH</title>
+  <meta name="description" content="Get in touch with the KEDRE TECH team for partnerships, collaborations, or general inquiries.">
+  <link rel="canonical" href="https://kedretech.com/contact.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .page-header {
+      padding: 140px var(--space-xl) var(--space-4xl);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 500px;
+      background: radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      margin-bottom: var(--space-md);
+    }
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Contact layout */
+    .contact-main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-xl) var(--space-4xl);
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+
+    /* Info sidebar */
+    .contact-info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      position: sticky;
+      top: 100px;
+    }
+
+    .contact-info-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: var(--space-xl);
+    }
+
+    .info-item {
+      display: flex;
+      gap: var(--space-md);
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-item:last-of-type { border-bottom: none; }
+    .info-icon {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-md);
+      background: rgba(37,99,235,0.12);
+      border: 1px solid rgba(59,130,246,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .info-content h4 {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .info-content p {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .info-content a { color: var(--blue-3); }
+
+    .social-row {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-xl);
+    }
+
+    /* Form card */
+    .contact-form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    /* Success state */
+    .success-state {
+      text-align: center;
+      padding: var(--space-3xl) 0;
+      display: none;
+    }
+    .success-icon { font-size: 3.5rem; margin-bottom: var(--space-lg); }
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: var(--space-sm);
+    }
+    .success-text { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* FAQ */
+    .faq-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 var(--space-xl) var(--space-4xl);
+    }
+    .faq-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: var(--space-3xl);
+    }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--space-sm);
+    }
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-lg) var(--space-xl);
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      background: var(--surface);
+      transition: background var(--t-fast);
+      text-align: left;
+      gap: var(--space-md);
+    }
+    .faq-question:hover { background: var(--surface-2); }
+    .faq-arrow {
+      font-size: 0.75rem;
+      transition: transform var(--t-base) var(--ease);
+      flex-shrink: 0;
+      color: var(--text-dim);
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s var(--ease);
+      background: var(--surface-2);
+    }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner {
+      padding: var(--space-lg) var(--space-xl) var(--space-xl);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .contact-main { grid-template-columns: 1fr; }
+      .contact-info-card { position: static; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .page-header { padding: 120px var(--space-lg) var(--space-2xl); }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+</head>
+<body>
+  <div id="scroll-progress"></div>
+
+  <header>
+    <nav id="navbar">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-mark">KT</div>
+          KEDRE TECH
+        </a>
+        <div class="nav-links">
+          <a href="index.html"   class="nav-link">Home</a>
+          <a href="blog.html"    class="nav-link">Blog</a>
+          <a href="contact.html" class="nav-link active">Contact</a>
+          <a href="admin.html"   class="nav-link" data-auth="admin" style="display:none">Admin</a>
+        </div>
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-btn">☀️</button>
+          <div data-auth="guest" style="display:flex;gap:8px;">
+            <button class="btn-nav-cta" onclick="openModal('auth-modal')">Sign In</button>
+          </div>
+          <div data-auth="user" style="display:none;align-items:center;gap:8px;">
+            <span style="font-size:0.85rem;color:var(--text-muted);">Hi, <span id="user-name"></span></span>
+            <button class="btn btn-ghost btn-sm" data-action="sign-out">Sign Out</button>
+          </div>
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <nav id="mobile-nav" class="mobile-nav">
+      <a href="index.html"   class="nav-link">Home</a>
+      <a href="blog.html"    class="nav-link">Blog</a>
+      <a href="contact.html" class="nav-link active">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-inner reveal">
+        <span class="section-label">Contact</span>
+        <h1 class="page-title">Let's Connect</h1>
+        <p class="page-subtitle">Whether you have a story idea, partnership inquiry, or just want to say hello — we're here and we respond fast.</p>
+      </div>
+    </div>
+
+    <!-- Contact Grid -->
+    <div class="contact-main">
+      <!-- Info -->
+      <div class="contact-info-card reveal">
+        <h2 class="contact-info-title">Get in Touch</h2>
+
+        <div class="info-item">
+          <div class="info-icon">✉️</div>
+          <div class="info-content">
+            <h4>Email</h4>
+            <p><a href="mailto:hello@kedretech.com">hello@kedretech.com</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">⏱️</div>
+          <div class="info-content">
+            <h4>Response Time</h4>
+            <p>Usually within 24 hours on business days</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">🤝</div>
+          <div class="info-content">
+            <h4>Collaborations</h4>
+            <p>Open to guest posts, interviews, and feature partnerships</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📢</div>
+          <div class="info-content">
+            <h4>Sponsorships</h4>
+            <p>Reach thousands of tech readers. <a href="mailto:sponsors@kedretech.com">sponsors@kedretech.com</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">🐛</div>
+          <div class="info-content">
+            <h4>Report an Issue</h4>
+            <p>Found a bug or error? Let us know!</p>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Twitter/X">𝕏</a>
+          <a href="#" class="social-btn" aria-label="GitHub">⌥</a>
+          <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+          <a href="#" class="social-btn" aria-label="YouTube">▶</a>
+          <a href="#" class="social-btn" aria-label="Telegram">✈️</a>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form-card reveal reveal-delay-2">
+        <!-- Success -->
+        <div class="success-state" id="contact-success">
+          <div class="success-icon">🎉</div>
+          <h3 class="success-title">Message Sent!</h3>
+          <p class="success-text">Thanks for reaching out. We'll get back to you within 24 hours.</p>
+          <button class="btn btn-ghost" style="margin-top:var(--space-xl);" onclick="resetContactForm()">Send Another Message</button>
+        </div>
+
+        <!-- Form -->
+        <div id="contact-form-wrap">
+          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;color:var(--white);margin-bottom:6px;">Send a Message</h2>
+          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-xl);">All fields marked with * are required.</p>
+
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="c-name">Full Name *</label>
+                <input type="text" id="c-name" class="form-input" placeholder="John Doe" required autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="c-email">Email Address *</label>
+                <input type="email" id="c-email" class="form-input" placeholder="john@company.com" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="c-subject">Subject</label>
+              <select id="c-subject" class="form-input form-select">
+                <option value="">Select a topic…</option>
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Guest Post Proposal">Guest Post Proposal</option>
+                <option value="Partnership / Collaboration">Partnership / Collaboration</option>
+                <option value="Sponsorship">Sponsorship Inquiry</option>
+                <option value="Technical Issue">Technical Issue / Bug</option>
+                <option value="Feedback">Feedback</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="c-message">Message *</label>
+              <textarea id="c-message" class="form-textarea" placeholder="Tell us what's on your mind. The more detail you provide, the better we can help." required style="min-height:180px;"></textarea>
+              <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+                <span id="char-count" style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">0 / 2000</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:var(--space-lg);">
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:0.85rem;color:var(--text-muted);">
+                <input type="checkbox" id="c-agree" style="width:16px;height:16px;accent-color:var(--blue);margin-top:2px;flex-shrink:0;" required>
+                <span>I agree to KEDRE TECH's <a href="#" style="color:var(--blue-3);">Privacy Policy</a> and consent to being contacted regarding my inquiry.</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="contact-submit" style="width:100%;height:52px;">
+              <span id="contact-btn-text">Send Message</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2 class="faq-title reveal">Frequently Asked Questions</h2>
+
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Do you accept guest post submissions?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes! We welcome high-quality guest posts on topics related to technology, AI, software development, and design. Please send your pitch to hello@kedretech.com with your topic idea, a brief outline, and links to previous writing samples.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How do I advertise or sponsor content on KEDRE TECH?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              We offer sponsored articles, newsletter placements, and banner sponsorships. Our audience consists primarily of developers, designers, and tech enthusiasts. Email sponsors@kedretech.com for our media kit and pricing.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-2">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            How quickly will I get a response?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              We aim to respond to all inquiries within 24 hours on business days. For urgent matters or technical issues, feel free to mention the priority in your subject line.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-3">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            I found an error in an article. How do I report it?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              We appreciate community corrections! Use the contact form and select "Technical Issue / Bug" as the subject, or send us an email with the article URL and the specific error you found. We review all reports and correct errors promptly.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-4">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            Can I republish or share KEDRE TECH articles?
+            <span class="faq-arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              You're welcome to share links to our articles on social media and in newsletters. For republishing full articles or excerpts, please contact us first to get written permission and ensure proper attribution.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-bottom" style="padding-top:0;border-top:none;">
+        <p>© 2025 KEDRE TECH. All rights reserved.</p>
+        <div style="display:flex;gap:var(--space-xl);">
+          <a href="index.html" style="color:var(--text-dim);font-size:0.825rem;">Home</a>
+          <a href="blog.html"  style="color:var(--text-dim);font-size:0.825rem;">Blog</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeModal('auth-modal')">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="signin">Sign In</button>
+        <button class="auth-tab" data-tab="signup">Create Account</button>
+      </div>
+      <div id="signin-panel" class="auth-panel">
+        <h2 class="auth-title">Welcome back</h2>
+        <p class="auth-subtitle">Sign in to engage with the community</p>
+        <form id="signin-form">
+          <div class="form-group">
+            <label class="form-label" for="si-email">Email</label>
+            <input type="email" id="si-email" class="form-input" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="si-password">Password</label>
+            <input type="password" id="si-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <div id="signin-error" class="auth-error"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signin-submit">Sign In</button>
+        </form>
+      </div>
+      <div id="signup-panel" class="auth-panel" style="display:none;">
+        <h2 class="auth-title">Join KEDRE TECH</h2>
+        <form id="signup-form">
+          <div class="form-group"><label class="form-label" for="su-name">Full Name</label><input type="text" id="su-name" class="form-input" required></div>
+          <div class="form-group"><label class="form-label" for="su-email">Email</label><input type="email" id="su-email" class="form-input" required></div>
+          <div class="form-group"><label class="form-label" for="su-password">Password</label><input type="password" id="su-password" class="form-input" required minlength="8"></div>
+          <div id="signup-error" class="auth-error"></div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="signup-submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared modals CSS needed -->
+  <style>
+    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:9000;display:none;align-items:center;justify-content:center;padding:var(--space-xl); }
+    .modal-overlay.open { display:flex; }
+    .modal-content { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-2xl);position:relative;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:modal-slide 0.3s var(--ease-spring) forwards;box-shadow:var(--shadow-lg); }
+    @keyframes modal-slide { from{opacity:0;transform:translateY(24px) scale(0.97)} to{opacity:1;transform:none} }
+    .modal-close { position:absolute;top:var(--space-lg);right:var(--space-lg);width:32px;height:32px;border-radius:var(--radius-md);background:var(--white-15);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all var(--t-fast);cursor:pointer; }
+    .modal-close:hover { background:var(--red);color:white; }
+    .auth-tabs { display:flex;border-bottom:1px solid var(--border);margin-bottom:var(--space-xl);gap:var(--space-sm); }
+    .auth-tab { padding:10px 20px;font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all var(--t-fast);cursor:pointer; }
+    .auth-tab.active { color:var(--blue-3);border-bottom-color:var(--blue); }
+    .auth-title { font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;color:var(--white);margin-bottom:var(--space-xs); }
+    .auth-subtitle { font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-xl); }
+    .auth-error { padding:10px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:var(--radius-md);font-size:0.85rem;color:#fca5a5;margin-bottom:var(--space-md);display:none; }
+    .auth-error.visible { display:block; }
+  </style>
+
+  <div id="toast-container"></div>
+  <button id="back-to-top" aria-label="Scroll to top">↑</button>
+
+  <script src="js/app.js" defer></script>
+  <script>
+    window.openModal  = id => document.getElementById(id)?.classList.add('open');
+    window.closeModal = id => document.getElementById(id)?.classList.remove('open');
+
+    // ── FAQ ──────────────────────────────────────────────────
+    window.toggleFaq = function(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    };
+
+    // ── Contact Form ─────────────────────────────────────────
+    const msgArea = document.getElementById('c-message');
+    const charCnt = document.getElementById('char-count');
+    if (msgArea) {
+      msgArea.addEventListener('input', () => {
+        const len = msgArea.value.length;
+        charCnt.textContent = `${len} / 2000`;
+        charCnt.style.color = len > 1800 ? 'var(--amber)' : 'var(--text-dim)';
+      });
+    }
+
+    document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name    = document.getElementById('c-name').value.trim();
+      const email   = document.getElementById('c-email').value.trim();
+      const subject = document.getElementById('c-subject').value;
+      const message = document.getElementById('c-message').value.trim();
+      const agree   = document.getElementById('c-agree').checked;
+
+      if (!name || !email || !message) { Toast.show('Please fill all required fields', 'warning'); return; }
+      if (!agree) { Toast.show('Please agree to the privacy policy', 'warning'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { Toast.show('Invalid email address', 'warning'); return; }
+
+      const btn    = document.getElementById('contact-submit');
+      const btnTxt = document.getElementById('contact-btn-text');
+      btn.disabled = true;
+      btnTxt.textContent = 'Sending…';
+
+      try {
+        await ContactAPI.send(name, email, subject, message);
+        document.getElementById('contact-form-wrap').style.display = 'none';
+        document.getElementById('contact-success').style.display = 'block';
+      } catch {
+        Toast.show('Failed to send message. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btnTxt.textContent = 'Send Message';
+      }
+    });
+
+    window.resetContactForm = function() {
+      document.getElementById('contact-form-wrap').style.display = 'block';
+      document.getElementById('contact-success').style.display = 'none';
+      document.getElementById('contact-form').reset();
+    };
+
+    // ── Auth modal ────────────────────────────────────────────
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.auth-panel').forEach(p => p.style.display = 'none');
+        document.getElementById(`${tab.dataset.tab}-panel`).style.display = 'block';
+      });
+    });
+    document.getElementById('signin-form')?.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('signin-submit');
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        await Auth.signIn(document.getElementById('si-email').value, document.getElementById('si-password').value);
+        Toast.show('Welcome back!', 'success'); closeModal('auth-modal');
+      } catch(err) {
+        const el = document.getElementById('signin-error');
+        if (el) { el.textContent = err.message; el.classList.add('visible'); }
+      } finally { btn.disabled = false; btn.textContent = 'Sign In'; }
+    });
+    document.getElementById('signup-form')?.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('signup-submit');
+      btn.disabled = true; btn.textContent = 'Creating…';
+      try {
+        await Auth.signUp(document.getElementById('su-email').value, document.getElementById('su-password').value, document.getElementById('su-name').value);
+        Toast.show('Account created! Check your email.', 'success'); closeModal('auth-modal');
+      } catch(err) {
+        const el = document.getElementById('signup-error');
+        if (el) { el.textContent = err.message; el.classList.add('visible'); }
+      } finally { btn.disabled = false; btn.textContent = 'Create Account'; }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    });
+  </script>
+</body>
+</html>
